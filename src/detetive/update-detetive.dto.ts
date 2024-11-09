@@ -1,24 +1,27 @@
 import { IsString, IsEnum, IsDateString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateDetetiveDto {
-  @ApiProperty({ description: 'Nome do detetive', example: 'João Silva' })
+export class UpdateDetetiveDto {
+  @ApiProperty({ description: 'Nome do detetive', required: false, example: 'João Silva' })
   @IsString()
-  nome: string;
+  @IsOptional()
+  nome?: string;
 
-  @ApiProperty({ description: 'Data de nascimento do detetive', example: '1985-10-20' })
+  @ApiProperty({ description: 'Data de nascimento do detetive', required: false, example: '1985-10-20' })
   @IsDateString()
-  dataNascimento: string;
+  @IsOptional()
+  dataNascimento?: string;
 
-  @ApiProperty({ description: 'Tipo de detetive', enum: ['Policial', 'Particular'], example: 'Policial' })
+  @ApiProperty({ description: 'Tipo de detetive', enum: ['Policial', 'Particular'], required: false, example: 'Particular' })
   @IsEnum(['Policial', 'Particular'])
-  tipo: 'Policial' | 'Particular';
+  @IsOptional()
+  tipo?: 'Policial' | 'Particular';
 
   @ApiProperty({
     description: 'Patente do detetive',
     enum: ['Detetive', 'Detetive de 1ª Classe', 'Investigador Chefe'],
     required: false,
-    example: 'Detetive de 1ª Classe',
+    example: 'Investigador Chefe',
   })
   @IsEnum(['Detetive', 'Detetive de 1ª Classe', 'Investigador Chefe'])
   @IsOptional()
@@ -28,13 +31,13 @@ export class CreateDetetiveDto {
     description: 'Especialidade do detetive',
     enum: ['Homicídios', 'Fraudes', 'Tráfico de Drogas', 'Roubos', 'Outros'],
     required: false,
-    example: 'Homicídios',
+    example: 'Fraudes',
   })
   @IsEnum(['Homicídios', 'Fraudes', 'Tráfico de Drogas', 'Roubos', 'Outros'])
   @IsOptional()
   especialidade?: 'Homicídios' | 'Fraudes' | 'Tráfico de Drogas' | 'Roubos' | 'Outros';
 
-  @ApiProperty({ description: 'Depoimento do detetive', required: false, example: 'O detetive foi fundamental na investigação.' })
+  @ApiProperty({ description: 'Depoimento do detetive', required: false, example: 'Ele tem uma vasta experiência em casos de fraudes.' })
   @IsString()
   @IsOptional()
   depoimento?: string;

@@ -1,46 +1,75 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { ApiTags, ApiBody, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { DetetiveService } from './detetive.service';
-import { Detetive } from './detetive.schema';
 import { CreateDetetiveDto } from './create-detetive.dto';
+import { UpdateDetetiveDto } from './update-detetive.dto';
+import { Detetive } from './detetive.schema';
 
-@ApiTags('detetive')
-@Controller('detetive')
+@ApiTags('Detetives')
+@Controller('detetives')
 export class DetetiveController {
   constructor(private readonly detetiveService: DetetiveService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Criar um detetive' })
-  @ApiResponse({ status: 201, description: 'Detetive criado com sucesso.' })
+  @ApiOperation({ summary: 'Criar um novo detetive' })
   @ApiBody({
-    description: 'Informações do detetive para cadastro.',
+    description: 'Informações para criar um novo detetive',
     type: CreateDetetiveDto,
     examples: {
-      'application/json': {
+      exemplo1: {
         value: {
-          nome: 'João da Silva',
-          especialidade: 'Homicidios',
+          nome: 'Carlos Silva',
+          dataNascimento: '1985-10-20T00:00:00.000Z',
+          tipo: 'Policial',
+          patente: 'Detetive',
+          especialidade: 'Homicídios',
+          depoimento: 'O detetive foi fundamental na investigação.',
         },
       },
     },
   })
-  createDetetive(
-    @Body() createDetetiveDto: CreateDetetiveDto,
-  ): Promise<Detetive> {
-    return this.detetiveService.createDetetive(createDetetiveDto);
+  @ApiResponse({ status: 201, description: 'Detetive criado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Erro ao criar detetive' })
+  async create(@Body() createDetetiveDto: CreateDetetiveDto): Promise<Detetive> {
+    return this.detetiveService.create(createDetetiveDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obter todos os detetives' })
-  @ApiResponse({ status: 200, description: 'Lista de detetives.' })
-  getAllDetetives(): Promise<Detetive[]> {
-    return this.detetiveService.getAllDetetives();
+  @ApiOperation({ summary: 'Listar todos os detetives' })
+  @ApiResponse({ status: 200, description: 'Lista de detetives' })
+  @ApiResponse({ status: 500, description: 'Erro ao listar detetives' })
+  async findAll(): Promise<Detetive[]> {
+    return this.detetiveService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Obter um detetive pelo ID' })
-  @ApiResponse({ status: 200, description: 'Detetive encontrado.' })
-  getDetetiveById(@Param('id') id: string): Promise<Detetive> {
-    return this.detetiveService.getDetetiveById(id);
+  @ApiParam({ name: 'id', description: 'ID do detetive' })
+  @ApiResponse({ status: 200, description: 'Detetive encontrado' })
+  @ApiResponse({ status: 404, description: 'Detetive não encontrado' })
+  async findById(@Param('id') id: string): Promise<Detetive> {
+    return this.detetiveService.findById(id);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Atualizar informações de um detetive' })
+  @ApiParam({ name: 'id', description: 'ID do detetive' })
+  @ApiBody({ type: UpdateDetetiveDto })
+  @ApiResponse({ status: 200, description: 'Detetive atualizado' })
+  @ApiResponse({ status: 404, description: 'Detetive não encontrado' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateDetetiveDto: UpdateDetetiveDto,
+  ): Promise<Detetive> {
+    return this.detetiveService.update(id, updateDetetiveDto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Deletar um detetive' })
+  @ApiParam({ name: 'id', description: 'ID do detetive' })
+  @ApiResponse({ status: 200, description: 'Detetive deletado com sucesso' })
+  @ApiResponse({ status: 404, description: 'Detetive não encontrado' })
+  async delete(@Param('id') id: string): Promise<void> {
+    return this.detetiveService.delete(id);
   }
 }

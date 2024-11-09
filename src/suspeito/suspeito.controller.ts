@@ -15,12 +15,11 @@ import { CreateSuspeitoDto } from './create-suspeito.dto';
 import { UpdateSuspeitoDto } from './update-suspeito.dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Suspeitos') // Adiciona a tag para o Swagger
+@ApiTags('Suspeitos')
 @Controller('suspeitos')
 export class SuspeitoController {
   constructor(private readonly suspeitoService: SuspeitoService) {}
 
-  // POST: Adiciona um novo suspeito
   @Post()
   @ApiBody({
     description: 'Dados para criação de um novo suspeito',
@@ -46,13 +45,11 @@ export class SuspeitoController {
     return await this.suspeitoService.create(createSuspeitoDto);
   }
 
-  // GET: Lista todos os suspeitos
   @Get()
   async findAll() {
     return await this.suspeitoService.findAll();
   }
 
-  // GET (by ID): Busca um suspeito por ID
   @Get(':id')
   async findById(@Param('id') id: string) {
     const suspeito = await this.suspeitoService.findById(id);
@@ -60,7 +57,6 @@ export class SuspeitoController {
     return suspeito;
   }
 
-  // PUT: Atualiza um suspeito por ID
   @Put(':id')
   @ApiBody({
     description: 'Dados para atualização de um suspeito existente',
@@ -91,7 +87,6 @@ export class SuspeitoController {
     return suspeito;
   }
 
-  // DELETE: Remove um suspeito por ID
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiResponse({
