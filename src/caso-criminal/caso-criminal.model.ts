@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Suspeito } from '../suspeito/suspeito.schema';
 import { Testemunha } from '../testemunha/testemunha.schema';
 import { Detetive } from '../detetive/detetive.schema';
@@ -16,7 +16,7 @@ export class Caso extends Document {
   @Prop({ required: true })
   descricaoCrime: string;
 
-  @ApiProperty({ description: 'Id do crime' })
+  @ApiProperty({ description: 'ID do tipo de crime' })
   @Prop({ required: true })
   tipoCrimeId: string;
 
@@ -26,26 +26,38 @@ export class Caso extends Document {
 
   @ApiProperty({ description: 'Data de fechamento do caso', nullable: true })
   @Prop()
-  dataFechamento?: string;
+  dataFechamento?: string | null;
 
   @ApiProperty({ description: 'Status do caso' })
   @Prop({ required: true })
   statusCaso: string;
 
-  @ApiProperty({ description: 'Lista de suspeitos', type: [String] })
-  @Prop({ type: [{ type: String, ref: 'Suspeito' }] })
+  @ApiProperty({
+    description: 'Lista de suspeitos relacionados ao caso',
+    type: [String],
+  })
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Suspeito' }] })
   suspeitos: Suspeito[];
 
-  @ApiProperty({ description: 'Lista de testemunhas', type: [String] })
-  @Prop({ type: [{ type: String, ref: 'Testemunha' }] })
+  @ApiProperty({
+    description: 'Lista de testemunhas relacionadas ao caso',
+    type: [String],
+  })
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Testemunha' }] })
   testemunhas: Testemunha[];
 
-  @ApiProperty({ description: 'Lista de detetives', type: [String] })
-  @Prop({ type: [{ type: String, ref: 'Detetive' }] })
+  @ApiProperty({
+    description: 'Lista de detetives envolvidos no caso',
+    type: [String],
+  })
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Detetive' }] })
   detetives: Detetive[];
 
-  @ApiProperty({ description: 'Lista de evidências relacionadas ao caso', type: [String] })
-  @Prop({ type: [{ type: String, ref: 'Evidencia' }] })
+  @ApiProperty({
+    description: 'Lista de evidências relacionadas ao caso',
+    type: [String],
+  })
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Evidencia' }] })
   evidencias: Evidencia[];
 }
 

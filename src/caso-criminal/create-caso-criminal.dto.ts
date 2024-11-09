@@ -19,15 +19,18 @@ export class CreateCasoCriminalDto {
   @ApiProperty()
   statusCaso: string;
 
-  @ApiProperty({ type: [String] })
-  suspeitos: string[];
+  @ApiProperty({ type: [String], required: false })
+  suspeitos?: string[];
 
-  @ApiProperty({ type: [String] })
-  testemunhas: string[];
+  @ApiProperty({ type: [String], required: false })
+  testemunhas?: string[];
 
-  @ApiProperty({ type: [String] })
-  detetives: string[];
+  @ApiProperty({ type: [String], required: false })
+  detetives?: string[];
 
-  @ApiProperty({ type: [String] })
-  evidencias: string[];
+  @ApiProperty({ type: [String], required: false })
+  evidencias?: string[];
+
+  @ApiProperty({ type: [String], required: false })
+  entrevistas?: string[];
 }

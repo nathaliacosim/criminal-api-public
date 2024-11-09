@@ -8,6 +8,7 @@ import { Suspeito } from 'src/suspeito/suspeito.schema';
 import { Testemunha } from 'src/testemunha/testemunha.schema';
 import { Detetive } from 'src/detetive/detetive.schema';
 import { Evidencia } from 'src/evidencia/evidencia.schema';
+import { Entrevista } from 'src/entrevista/entrevista.schema';
 
 @Injectable()
 export class CasoCriminalService {
@@ -17,42 +18,43 @@ export class CasoCriminalService {
     @InjectModel('Testemunha') private readonly testemunhaModel: Model<Testemunha>,
     @InjectModel('Detetive') private readonly detetiveModel: Model<Detetive>,
     @InjectModel('Evidencia') private readonly evidenciaModel: Model<Evidencia>,
+    @InjectModel('Entrevista') private readonly entrevistaModel: Model<Entrevista>,
   ) {}
 
+  private async validateRelations(ids: string[], model: Model<any>, entityName: string) {
+    if (ids && ids.length > 0) {
+      const validEntities = await model.find({ '_id': { $in: ids } }).exec();
+      if (validEntities.length !== ids.length) {
+        throw new BadRequestException(`Alguns ${entityName} não foram encontrados.`);
+      }
+    }
+  }
+
   async createCasoCriminal(createCasoCriminalDto: CreateCasoCriminalDto): Promise<CasoCriminal> {
-    const { suspeitos, testemunhas, detetives, evidencias } = createCasoCriminalDto;
-    
-    const invalidSuspeitos = await this.suspeitoModel.find({ '_id': { $in: suspeitos } }).exec();
-    if (invalidSuspeitos.length !== suspeitos.length) {
-      throw new BadRequestException('Alguns suspeitos não foram encontrados.');
-    }
+    const { suspeitos, testemunhas, detetives, evidencias, entrevistas } = createCasoCriminalDto;
 
-    const invalidTestemunhas = await this.testemunhaModel.find({ '_id': { $in: testemunhas } }).exec();
-    if (invalidTestemunhas.length !== testemunhas.length) {
-      throw new BadRequestException('Algumas testemunhas não foram encontradas.');
-    }
-
-    const invalidDetetives = await this.detetiveModel.find({ '_id': { $in: detetives } }).exec();
-    if (invalidDetetives.length !== detetives.length) {
-      throw new BadRequestException('Alguns detetives não foram encontrados.');
-    }
-
-    const invalidEvidencias = await this.evidenciaModel.find({ '_id': { $in: evidencias } }).exec();
-    if (invalidEvidencias.length !== evidencias.length) {
-      throw new BadRequestException('Algumas evidências não foram encontradas.');
-    }
+    // Validações para relacionamentos
+    await this.validateRelations(suspeitos, this.suspeitoModel, 'suspeitos');
+    await this.validateRelations(testemunhas, this.testemunhaModel, 'testemunhas');
+    await this.validateRelations(detetives, this.detetiveModel, 'detetives');
+    await this.validateRelations(evidencias, this.evidenciaModel, 'evidências');
+    await this.validateRelations(entrevistas, this.entrevistaModel, 'entrevistas');
 
     const createdCasoCriminal = new this.casoCriminalModel(createCasoCriminalDto);
     return createdCasoCriminal.save();
   }
 
   async getAllCasosCriminais(): Promise<CasoCriminal[]> {
-    return this.casoCriminalModel.find().populate('suspeitos testemunhas detetives evidencias').exec();
+    return this.casoCriminalModel
+      .find()
+      .populate('suspeitos testemunhas detetives evidencias entrevistas')
+      .exec();
   }
 
   async getCasoCriminalById(id: string): Promise<CasoCriminal> {
-    const casoCriminal = await this.casoCriminalModel.findById(id)
-      .populate('suspeitos testemunhas detetives evidencias')
+    const casoCriminal = await this.casoCriminalModel
+      .findById(id)
+      .populate('suspeitos testemunhas detetives evidencias entrevistas')
       .exec();
 
     if (!casoCriminal) {
@@ -63,15 +65,22 @@ export class CasoCriminalService {
   }
 
   async updateCasoCriminal(id: string, updateCasoCriminalDto: UpdateCasoCriminalDto): Promise<CasoCriminal> {
-    const casoCriminal = await this.casoCriminalModel.findById(id).exec();
+    const { suspeitos, testemunhas, detetives, evidencias, entrevistas } = updateCasoCriminalDto;
 
-    if (!casoCriminal) {
+    // Validações para relacionamentos
+    await this.validateRelations(suspeitos, this.suspeitoModel, 'suspeitos');
+    await this.validateRelations(testemunhas, this.testemunhaModel, 'testemunhas');
+    await this.validateRelations(detetives, this.detetiveModel, 'detetives');
+    await this.validateRelations(evidencias, this.evidenciaModel, 'evidências');
+    await this.validateRelations(entrevistas, this.entrevistaModel, 'entrevistas');
+
+    const updatedCasoCriminal = await this.casoCriminalModel
+      .findByIdAndUpdate(id, updateCasoCriminalDto, { new: true })
+      .exec();
+
+    if (!updatedCasoCriminal) {
       throw new NotFoundException('Caso criminal não encontrado.');
     }
-
-    const updatedCasoCriminal = await this.casoCriminalModel.findByIdAndUpdate(id, updateCasoCriminalDto, {
-      new: true,
-    }).exec();
 
     return updatedCasoCriminal;
   }

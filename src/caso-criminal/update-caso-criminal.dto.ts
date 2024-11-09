@@ -27,4 +27,7 @@ export class UpdateCasoCriminalDto {
 
   @ApiProperty({ type: [String], required: false })
   evidencias?: string[];
+
+  @ApiProperty({ type: [String], required: false })
+  entrevistas?: string[];
 }

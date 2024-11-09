@@ -11,7 +11,7 @@ import { EvidenciaSchema } from 'src/evidencia/evidencia.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'CasoCriminal', schema: CasoCriminalSchema },
+      { name: 'Caso', schema: CasoCriminalSchema },
       { name: 'Suspeito', schema: SuspeitoSchema },
       { name: 'Testemunha', schema: TestemunhaSchema },
       { name: 'Detetive', schema: DetetiveSchema },

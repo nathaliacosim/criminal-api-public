@@ -22,7 +22,7 @@ export class CasoCriminalController {
   @Get()
   @ApiOperation({ summary: 'Obter todos os casos criminais' })
   @ApiResponse({ status: 200, description: 'Lista de casos criminais.' })
-  getAllCasosCriminais(@Query() query: any): Promise<CasoCriminal[]> {
+  async getAllCasosCriminais(@Query() query: any): Promise<CasoCriminal[]> {
     return this.casoCriminalService.getAllCasosCriminais();
   }
 
@@ -30,7 +30,7 @@ export class CasoCriminalController {
   @ApiOperation({ summary: 'Obter um caso criminal pelo ID' })
   @ApiResponse({ status: 200, description: 'Caso criminal encontrado.' })
   @ApiResponse({ status: 404, description: 'Caso criminal não encontrado.' })
-  getCasoCriminal(@Param('id') id: string): Promise<CasoCriminal> {
+  async getCasoCriminal(@Param('id') id: string): Promise<CasoCriminal> {
     return this.casoCriminalService.getCasoCriminalById(id);
   }
 

@@ -3,6 +3,7 @@ import { Suspeito } from 'src/suspeito/suspeito.schema';
 import { Testemunha } from 'src/testemunha/testemunha.schema';
 import { Detetive } from 'src/detetive/detetive.schema';
 import { Evidencia } from 'src/evidencia/evidencia.schema';
+import { Entrevista } from 'src/entrevista/entrevista.schema';
 
 export const CasoCriminalSchema = new Schema({
   nomeVitima: { type: String, required: true },
@@ -25,7 +26,8 @@ export const CasoCriminalSchema = new Schema({
   suspeitos: [{ type: Schema.Types.ObjectId, ref: 'Suspeito' }],
   testemunhas: [{ type: Schema.Types.ObjectId, ref: 'Testemunha' }],
   detetives: [{ type: Schema.Types.ObjectId, ref: 'Detetive' }],
-  evidencias: [{ type: Schema.Types.ObjectId, ref: 'Evidencia' }]
+  evidencias: [{ type: Schema.Types.ObjectId, ref: 'Evidencia' }],
+  entrevistas: [{ type: Schema.Types.ObjectId, ref: 'Entrevista' }]
 });
 
 export interface CasoCriminal extends Document {
@@ -39,4 +41,5 @@ export interface CasoCriminal extends Document {
   testemunhas: Testemunha[];
   detetives: Detetive[];
   evidencias: Evidencia[];
+  entrevistas: Entrevista[];
 }
