@@ -1,37 +1,33 @@
-import { IsString, IsEnum, IsOptional, Matches } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCasoCriminalDto {
-  @IsString()
+  @ApiProperty()
   nomeVitima: string;
 
-  @IsString()
+  @ApiProperty()
   descricaoCrime: string;
 
-  @IsString()
+  @ApiProperty()
   tipoCrime: string;
 
-  @IsString()
-  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
-    message: 'dataAbertura deve estar no formato YYYY-MM-DD',
-  })
+  @ApiProperty()
   dataAbertura: string;
 
-  @IsOptional()
-  @IsString()
-  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
-    message: 'dataFechamento deve estar no formato YYYY-MM-DD',
-  })
+  @ApiProperty({ required: false })
   dataFechamento?: string;
 
-  @IsEnum(['Aberto', 'Fechado', 'Em Investigação', 'Suspenso', 'Arquivado'])
+  @ApiProperty()
   statusCaso: string;
 
-  @IsOptional()
-  suspeitos?: string[];
+  @ApiProperty({ type: [String] })
+  suspeitos: string[];
 
-  @IsOptional()
-  testemunhas?: string[];
+  @ApiProperty({ type: [String] })
+  testemunhas: string[];
 
-  @IsOptional()
-  detetives?: string[];
+  @ApiProperty({ type: [String] })
+  detetives: string[];
+
+  @ApiProperty({ type: [String] })
+  evidencias: string[];
 }

@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import { Suspeito } from '../suspeito/suspeito.schema';
 import { Testemunha } from '../testemunha/testemunha.schema';
 import { Detetive } from '../detetive/detetive.schema';
+import { Evidencia } from '../evidencia/evidencia.schema';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Schema({ timestamps: true })
@@ -42,6 +43,10 @@ export class Caso extends Document {
   @ApiProperty({ description: 'Lista de detetives', type: [String] })
   @Prop({ type: [{ type: String, ref: 'Detetive' }] })
   detetives: Detetive[];
+
+  @ApiProperty({ description: 'Lista de evidências relacionadas ao caso', type: [String] })
+  @Prop({ type: [{ type: String, ref: 'Evidencia' }] })
+  evidencias: Evidencia[];
 }
 
 export const CasoSchema = SchemaFactory.createForClass(Caso);

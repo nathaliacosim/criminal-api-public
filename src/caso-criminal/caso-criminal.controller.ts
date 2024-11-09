@@ -1,33 +1,37 @@
-// src/caso-criminal/caso-criminal.controller.ts
 import {
   Controller,
   Post,
   Body,
   Get,
-  BadRequestException,
-  Delete,
   Param,
+  Delete,
+  Put,
+  Query,
 } from '@nestjs/common';
+import { CasoCriminal } from './caso-criminal.schema';
 import { CasoCriminalService } from './caso-criminal.service';
 import { CreateCasoCriminalDto } from './create-caso-criminal.dto';
-import { CasoCriminal } from './caso-criminal.schema';
+import { UpdateCasoCriminalDto } from './update-caso-criminal.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-import { Caso } from './caso-criminal.model';
-import { TipoCrimeService } from 'src/tipo-crime/tipo-crime.service';
 
 @ApiTags('caso-criminal')
 @Controller('caso-criminal')
 export class CasoCriminalController {
-  constructor(
-    private readonly casoCriminalService: CasoCriminalService,
-    private readonly tipoCrimeService: TipoCrimeService,
-  ) {}
+  constructor(private readonly casoCriminalService: CasoCriminalService) {}
 
   @Get()
   @ApiOperation({ summary: 'Obter todos os casos criminais' })
   @ApiResponse({ status: 200, description: 'Lista de casos criminais.' })
-  getAllCasosCriminais(): Promise<CasoCriminal[]> {
+  getAllCasosCriminais(@Query() query: any): Promise<CasoCriminal[]> {
     return this.casoCriminalService.getAllCasosCriminais();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Obter um caso criminal pelo ID' })
+  @ApiResponse({ status: 200, description: 'Caso criminal encontrado.' })
+  @ApiResponse({ status: 404, description: 'Caso criminal não encontrado.' })
+  getCasoCriminal(@Param('id') id: string): Promise<CasoCriminal> {
+    return this.casoCriminalService.getCasoCriminalById(id);
   }
 
   @Post()
@@ -35,39 +39,67 @@ export class CasoCriminalController {
   @ApiResponse({
     status: 201,
     description: 'Caso criminal criado com sucesso.',
-    type: Caso,
   })
   @ApiBody({
-    description: 'Informações do caso para cadastro.',
+    description: 'Informações para cadastro do caso criminal.',
     type: CreateCasoCriminalDto,
     examples: {
       'application/json': {
         value: {
           nomeVitima: 'João da Silva',
           descricaoCrime: 'Assalto a Mão Armada',
-          tipoCrime: '672d0b72318996c2f4f73288',
+          tipoCrime: 'Roubo',
           dataAbertura: '2024-11-07',
           dataFechamento: '2024-11-10',
           statusCaso: 'Aberto',
           suspeitos: ['Suspeito 1'],
           testemunhas: ['Testemunha 1'],
           detetives: ['Detetive 1'],
+          evidencias: ['Evidencia 1'],
         },
       },
     },
   })
-  createCasoCriminal(
+  async createCasoCriminal(
     @Body() createCasoCriminalDto: CreateCasoCriminalDto,
   ): Promise<CasoCriminal> {
-    const tipoCrimeExistente = this.tipoCrimeService.findById(
-      createCasoCriminalDto.tipoCrime,
-    );
-
-    if (!tipoCrimeExistente) {
-      throw new BadRequestException('Tipo de crime não encontrado.');
-    }
-
     return this.casoCriminalService.createCasoCriminal(createCasoCriminalDto);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Atualizar um caso criminal' })
+  @ApiResponse({
+    status: 200,
+    description: 'Caso criminal atualizado com sucesso.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Caso criminal não encontrado.',
+  })
+  @ApiBody({
+    description: 'Informações para atualização do caso criminal.',
+    type: UpdateCasoCriminalDto,
+    examples: {
+      'application/json': {
+        value: {
+          nomeVitima: 'Maria Souza',
+          descricaoCrime: 'Furto em residência',
+          tipoCrime: 'Furto',
+          dataFechamento: '2024-11-09',
+          statusCaso: 'Fechado',
+          suspeitos: ['Suspeito 2'],
+          testemunhas: ['Testemunha 2'],
+          detetives: ['Detetive 2'],
+          evidencias: ['Evidencia 2'],
+        },
+      },
+    },
+  })
+  async updateCasoCriminal(
+    @Param('id') id: string,
+    @Body() updateCasoCriminalDto: UpdateCasoCriminalDto,
+  ): Promise<CasoCriminal> {
+    return this.casoCriminalService.updateCasoCriminal(id, updateCasoCriminalDto);
   }
 
   @Delete(':id')

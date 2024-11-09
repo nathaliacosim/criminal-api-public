@@ -7,15 +7,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CorsMiddleware } from './cors.middleware';
 import { CasoCriminalModule } from './caso-criminal/caso-criminal.module';
-import { TipoCrimeModule } from './tipo-crime/tipo-crime.module';
 import { SuspeitoModule } from './suspeito/suspeito.module';
 import { TestemunhaModule } from './testemunha/testemunha.module';
 import { DetetiveModule } from './detetive/detetive.module';
+import { EvidenciaModule } from './evidencia/evidencia.module';
 
 dotenv.config();
 
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
+const dbHost = process.env.DB_HOST || 'localhost';
 
 if (!dbUser || !dbPassword) {
   throw new Error(
@@ -33,10 +34,10 @@ if (!dbUser || !dbPassword) {
       `mongodb+srv://${dbUser}:${dbPassword}@criminalcluster.a4xg1.mongodb.net/?retryWrites=true&w=majority&appName=CriminalCluster`,
     ),
     CasoCriminalModule,
-    TipoCrimeModule,
     SuspeitoModule,
     TestemunhaModule,
     DetetiveModule,
+    EvidenciaModule
   ],
   controllers: [AppController],
   providers: [AppService],
