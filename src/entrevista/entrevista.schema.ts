@@ -5,14 +5,14 @@ export const EntrevistaSchema = new Schema({
   tipoEntrevistado: { type: String, required: true },
   tipoEntrevista: {
     type: String,
-    enum: ['Online', 'Presencia'],
+    enum: ['ONLINE', 'PRESENCIAL'],
     required: true,
   },
   localEntrevista: { type: String, required: true },
   casoCriminal: { type: Schema.Types.ObjectId, ref: 'CasoCriminal', required: true },
   motivoEntrevista: {
     type: String,
-    enum: ['Investigação', 'Esclarecimento', 'Depoimento', 'Outros'],
+    enum: ['Investigação', 'Esclarecimento', 'Depoimento', 'Interrogatório', 'Outros'],
     required: true,
   },
   nomeResponsavel: { type: String, required: true },

@@ -51,7 +51,7 @@ export class CasoCriminalController {
           tipoCrime: 'Roubo',
           dataAbertura: '2024-11-07',
           dataFechamento: '2024-11-10',
-          statusCaso: 'Aberto',
+          statusCaso: 'Aberto', //  ['Aberto', 'Fechado', 'Em Investigação', 'Arquivado', 'Suspenso']
           suspeitos: ['Suspeito 1'],
           testemunhas: ['Testemunha 1'],
           detetives: ['Detetive 1'],
@@ -86,7 +86,7 @@ export class CasoCriminalController {
           descricaoCrime: 'Furto em residência',
           tipoCrime: 'Furto',
           dataFechamento: '2024-11-09',
-          statusCaso: 'Fechado',
+          statusCaso: 'Fechado', //  ['Aberto', 'Fechado', 'Em Investigação', 'Arquivado', 'Suspenso']
           suspeitos: ['Suspeito 2'],
           testemunhas: ['Testemunha 2'],
           detetives: ['Detetive 2'],

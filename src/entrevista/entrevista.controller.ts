@@ -1,20 +1,39 @@
-// src/entrevista/entrevista.controller.ts
 import { Controller, Post, Body, Get, Param, Delete, Put } from '@nestjs/common';
 import { EntrevistaService } from './entrevista.service';
 import { CreateEntrevistaDto } from './create-entrevista.dto';
 import { UpdateEntrevistaDto } from './update-entrevista.dto';
 import { Entrevista } from './entrevista.schema';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { NotFoundException } from '@nestjs/common';
 
-@ApiTags('entrevista')
-@Controller('entrevista')
+@ApiTags('Entrevistas')
+@Controller('entrevistas')
 export class EntrevistaController {
   constructor(private readonly entrevistaService: EntrevistaService) {}
 
   @Post()
   @ApiOperation({ summary: 'Criar uma nova entrevista' })
   @ApiResponse({ status: 201, description: 'Entrevista criada com sucesso.' })
-  @ApiBody({ type: CreateEntrevistaDto })
+  @ApiBody({
+    type: CreateEntrevistaDto,
+    description: 'Dados para criação de uma nova entrevista',
+    examples: {
+      'application/json': {
+        value: {
+          entrevistado: 'João da Silva',
+          tipoEntrevistado: 'Suspeito',
+          tipoEntrevista: 'Interrogatório',
+          localEntrevista: 'Delegacia de Polícia',
+          casoCriminal: '60d2a76d96d3e150a7f380e3',
+          motivoEntrevista: 'Esclarecimento de fatos',
+          nomeResponsavel: 'Carlos Pereira',
+          ataEntrevista: 'Texto da ata da entrevista...',
+          dataHoraInicio: '2024-11-09T10:00:00Z',
+          dataHoraFim: '2024-11-09T12:00:00Z',
+        },
+      },
+    },
+  })
   async create(@Body() createEntrevistaDto: CreateEntrevistaDto): Promise<Entrevista> {
     return this.entrevistaService.create(createEntrevistaDto);
   }
@@ -34,8 +53,19 @@ export class EntrevistaController {
   @ApiOperation({ summary: 'Deletar uma entrevista' })
   @ApiResponse({ status: 200, description: 'Entrevista deletada com sucesso.' })
   @ApiResponse({ status: 404, description: 'Entrevista não encontrada.' })
-  async delete(@Param('id') id: string): Promise<void> {
-    return this.entrevistaService.delete(id);
+  async delete(@Param('id') id: string): Promise<boolean> {
+    const result = await this.entrevistaService.delete(id);
+    if (!result) {
+      throw new NotFoundException('Entrevista não encontrada');
+    }
+    return true;
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Listar todas as entrevistas' })
+  @ApiResponse({ status: 200, description: 'Lista de entrevistas' })
+  async findAll(): Promise<Entrevista[]> {
+    return this.entrevistaService.findAll();
   }
 
   @Get(':id')

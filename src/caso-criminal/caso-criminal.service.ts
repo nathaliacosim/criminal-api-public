@@ -33,7 +33,6 @@ export class CasoCriminalService {
   async createCasoCriminal(createCasoCriminalDto: CreateCasoCriminalDto): Promise<CasoCriminal> {
     const { suspeitos, testemunhas, detetives, evidencias, entrevistas } = createCasoCriminalDto;
 
-    // Validações para relacionamentos
     await this.validateRelations(suspeitos, this.suspeitoModel, 'suspeitos');
     await this.validateRelations(testemunhas, this.testemunhaModel, 'testemunhas');
     await this.validateRelations(detetives, this.detetiveModel, 'detetives');

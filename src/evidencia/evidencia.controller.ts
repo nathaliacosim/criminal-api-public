@@ -12,7 +12,23 @@ export class EvidenciaController {
 
   @Post()
   @ApiOperation({ summary: 'Criar uma nova evidência' })
-  @ApiBody({ type: CreateEvidenciaDto })
+  @ApiBody({
+    type: CreateEvidenciaDto,
+    examples: {
+      'application/json': {
+        value: {
+          casoCriminal: '60b8d1a2e4b0a2c90f82a4f4',
+          tipoEvidencia: 'Arma',
+          descricao: 'Pistola calibre 9mm encontrada no local do crime',
+          localizacao: 'Sala principal da residência, sob a mesa',
+          quemLocalizou: '60b8d1a2e4b0a2c90f82a4f5',
+          dataEncontro: '2024-11-09T14:30:00.000Z',
+          statusEvidencia: 'Boa',
+          observacoes: 'Nenhum sinal de dano ou desgaste visível',
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 201, description: 'Evidência criada com sucesso' })
   async create(@Body() createEvidenciaDto: CreateEvidenciaDto): Promise<Evidencia> {
     return this.evidenciaService.create(createEvidenciaDto);

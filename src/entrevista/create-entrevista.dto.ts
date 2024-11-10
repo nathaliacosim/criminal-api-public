@@ -12,8 +12,8 @@ export class CreateEntrevistaDto {
   @IsNotEmpty()
   tipoEntrevistado: string;
 
-  @ApiProperty({ description: 'Tipo da entrevista', enum: ['online', 'presencial'] })
-  @IsEnum(['online', 'presencial'])
+  @ApiProperty({ description: 'Tipo da entrevista', enum: ['ONLINE', 'PRESENCIAL'] })
+  @IsEnum(['ONLINE', 'PRESENCIAL'])
   @IsNotEmpty()
   tipoEntrevista: string;
 

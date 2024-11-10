@@ -1,10 +1,12 @@
-import { IsString, IsDate, IsEnum } from 'class-validator';
+import { IsString, IsDate, IsEnum, isInt, IsInt, IsOptional,  } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateSuspeitoDto {
   @IsString()
   nome: string;
 
   @IsDate()
+  @Type(() => Date)
   dataNascimento: Date;
 
   @IsString()
@@ -21,4 +23,8 @@ export class CreateSuspeitoDto {
 
   @IsEnum(['Primário', 'Secundário', 'Terciário', 'Cúmplice', 'Pessoa de interesse'])
   grauSuspeito: string;
+
+  @IsString()
+  @IsOptional()
+  casoCriminal?: string;
 }

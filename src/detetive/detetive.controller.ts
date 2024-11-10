@@ -22,8 +22,7 @@ export class DetetiveController {
           dataNascimento: '1985-10-20T00:00:00.000Z',
           tipo: 'Policial',
           patente: 'Detetive',
-          especialidade: 'Homicídios',
-          depoimento: 'O detetive foi fundamental na investigação.',
+          especialidade: 'Homicídios'
         },
       },
     },

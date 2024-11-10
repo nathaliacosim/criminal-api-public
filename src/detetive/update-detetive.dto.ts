@@ -36,9 +36,4 @@ export class UpdateDetetiveDto {
   @IsEnum(['Homicídios', 'Fraudes', 'Tráfico de Drogas', 'Roubos', 'Outros'])
   @IsOptional()
   especialidade?: 'Homicídios' | 'Fraudes' | 'Tráfico de Drogas' | 'Roubos' | 'Outros';
-
-  @ApiProperty({ description: 'Depoimento do detetive', required: false, example: 'Ele tem uma vasta experiência em casos de fraudes.' })
-  @IsString()
-  @IsOptional()
-  depoimento?: string;
 }

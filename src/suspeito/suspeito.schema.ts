@@ -1,4 +1,5 @@
 import { Schema, Document } from 'mongoose';
+import { CasoCriminal } from 'src/caso-criminal/caso-criminal.schema';
 
 export const SuspeitoSchema = new Schema({
   nome: { type: String, required: true },
@@ -30,6 +31,11 @@ export const SuspeitoSchema = new Schema({
       'Pessoa de interesse'
     ], 
     required: true 
+  },
+  casoCriminal: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'CasoCriminal', 
+    required: false 
   }
 });
 
@@ -41,4 +47,5 @@ export interface Suspeito extends Document {
   alibi: string;
   relacaoComVitima: string;
   grauSuspeito: string;
+  casoCriminal: CasoCriminal; 
 }

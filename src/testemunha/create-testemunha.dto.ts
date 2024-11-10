@@ -1,4 +1,4 @@
-import { IsString, IsDateString, IsEnum, IsOptional } from 'class-validator';
+import { IsString, IsDateString, IsEnum, IsOptional, IsInt } from 'class-validator';
 
 export class CreateTestemunhaDto {
   @IsString()
@@ -25,4 +25,8 @@ export class CreateTestemunhaDto {
 
   @IsEnum(['Alta', 'Média', 'Baixa'])
   confiabilidade: 'Alta' | 'Média' | 'Baixa';
+
+  @IsString()
+  @IsOptional()
+  casoCriminal?: string;
 }

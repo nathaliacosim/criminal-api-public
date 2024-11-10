@@ -11,6 +11,7 @@ import { SuspeitoModule } from './suspeito/suspeito.module';
 import { TestemunhaModule } from './testemunha/testemunha.module';
 import { DetetiveModule } from './detetive/detetive.module';
 import { EvidenciaModule } from './evidencia/evidencia.module';
+import { EntrevistaModule } from './entrevista/entrevista.module';
 
 dotenv.config();
 
@@ -37,7 +38,8 @@ if (!dbUser || !dbPassword) {
     SuspeitoModule,
     TestemunhaModule,
     DetetiveModule,
-    EvidenciaModule
+    EvidenciaModule,
+    EntrevistaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

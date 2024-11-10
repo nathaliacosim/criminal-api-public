@@ -8,7 +8,7 @@ import {
   Param,
   NotFoundException,
   HttpCode,
-  HttpStatus
+  HttpStatus,
 } from '@nestjs/common';
 import { SuspeitoService } from './suspeito.service';
 import { CreateSuspeitoDto } from './create-suspeito.dto';
@@ -32,10 +32,11 @@ export class SuspeitoController {
           descricaoFisica: "Alto, cabelos castanhos",
           alibi: "Estava no trabalho",
           relacaoComVitima: "Amigo",
-          grauSuspeito: "Primário"
-        }
-      }
-    }
+          grauSuspeito: "Primário",
+          casoCriminal: "ID caso criminal" 
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 201,
@@ -46,11 +47,19 @@ export class SuspeitoController {
   }
 
   @Get()
+  @ApiResponse({
+    status: 200,
+    description: 'Retorna todos os suspeitos',
+  })
   async findAll() {
     return await this.suspeitoService.findAll();
   }
 
   @Get(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'Retorna um suspeito específico',
+  })
   async findById(@Param('id') id: string) {
     const suspeito = await this.suspeitoService.findById(id);
     if (!suspeito) throw new NotFoundException('Suspeito não encontrado');
@@ -69,10 +78,11 @@ export class SuspeitoController {
           descricaoFisica: "Baixa estatura, cabelos loiros",
           alibi: "Em casa",
           relacaoComVitima: "Parceiro(a) romântico(a)",
-          grauSuspeito: "Secundário"
-        }
-      }
-    }
+          grauSuspeito: "Secundário",
+          casoCriminal: "ID caso criminal", // Ajuste para um único ID de caso criminal
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 200,

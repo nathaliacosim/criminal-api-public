@@ -18,7 +18,6 @@ export const DetetiveSchema = new Schema({
     enum: ['Homicídios', 'Fraudes', 'Tráfico de Drogas', 'Roubos', 'Outros'], 
     required: false 
   },
-  depoimento: { type: String, required: false },
 });
 
 export interface Detetive extends Document {
@@ -27,5 +26,4 @@ export interface Detetive extends Document {
   tipo: 'Policial' | 'Particular';
   patente?: 'Detetive' | 'Detetive de 1ª Classe' | 'Investigador Chefe';
   especialidade?: 'Homicídios' | 'Fraudes' | 'Tráfico de Drogas' | 'Roubos' | 'Outros';
-  depoimento?: string;
 }
