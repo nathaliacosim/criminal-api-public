@@ -1,4 +1,3 @@
-// src/entrevista/entrevista.schema.ts
 import { Schema, Document } from 'mongoose';
 
 export const EntrevistaSchema = new Schema({
